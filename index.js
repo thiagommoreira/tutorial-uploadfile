@@ -1,6 +1,5 @@
 const express = require("express");
 
-const formidableMiddleware = require("express-formidable");
 const formidable = require("formidable");
 const path = require("path");
 
@@ -16,25 +15,30 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/view/index.html");
 });
 
-app.get("/upload-files", (req, res) => {
-    res.sendFile(__dirname + "/view/upload-files.html")
+app.get("/uploadfiles", (req, res) => {
+    res.sendFile(__dirname + "/view/uploadfiles.html")
 })
 
 form.on("file", (filename, file) => {
   form.emit("data", { name: "file", key: filename, value: file });
+  //console.log(filename)
+  console.log(file.name)
+  console.log(file.path)
+  
 });
 
-app.post("/upload-files", (req, res) => {
+app.post("/upload-files", (req, res, next) => {
   
   form.parse(req, (err, fields, files) => {
     if (err) {
       next(err);
       return;
     }
-    //console.log(fields);
-   // console.log(files);
+
+    
   });
-  res.redirect("/view/upload-files.html");
+  res.redirect("/uploadfiles.html");
+
 });
 
 app.listen(3000, () => {
